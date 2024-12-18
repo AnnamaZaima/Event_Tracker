@@ -2,7 +2,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            background-color: #c74848;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -26,7 +26,7 @@
         }
         .login-container input[type="email"],
         .login-container input[type="id"] {
-            width: 90%;
+            width: 100%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
@@ -44,21 +44,16 @@
         .login-container input[type="submit"]:hover {
             background-color: #45a049;
         }
-        .button-container {
-            margin-top: 10px;
+        .gap{margin-top: 10px;}
+        .club_login{
+          color: #2196F3;
         }
-        .club_login,
         .club_signup {
-          color: white;
-            background-color: #2196F3;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
+          color: #2196F3; 
         }
-        .club_login:hover,
+        .club_login:hover{
+            background-color: #0660bae2;
+        }
         .club_signup:hover {
             background-color: #0660bae2;
         }
@@ -68,15 +63,17 @@
     <div class="title">Eventify</div>
     <div class="login-container">
         <h2>Login</h2>
-        <form action="website.html" method="POST">
+        <form action="\Login" method="POST">
             <input type="email" name="email" placeholder="G-suite Email" required>
             <input type="id" name="id" placeholder="Id" required>
             <input type="submit" value="Login">
         </form>
-        <div class="button-container">
-            <button type="button" class="club_login">Club Login</button>
-            <button type="button" class="club_signup">Club Sign-up</button>
-        </div>
-    </div>
+            <a class="club_login" href="club_login.html">
+              Club Login
+            </a>
+            <p>   </p>
+            <a class="club_signup" href="signup.html">
+              Club Sign-up
+            </a>
 </body>
 </html>
