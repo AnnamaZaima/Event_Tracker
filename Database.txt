@@ -1,1 +1,65 @@
+mysql -u root -p
+Enter password:
+
+create database eventify;
+
+use eventify;
+
+CREATE TABLE club (
+    club_name VARCHAR(30) NULL DEFAULT NULL,
+    username VARCHAR(20) NOT NULL,
+    club_email VARCHAR(20) NULL DEFAULT NULL,
+    password VARCHAR(30) NULL DEFAULT NULL,
+    PRIMARY KEY (username)
+);
+
+CREATE TABLE event (
+    Event_id INT(254) NOT NULL,
+    Event_name VARCHAR(100) NULL DEFAULT NULL,
+    username VARCHAR(20) NOT NULL,
+    details MEDIUMTEXT NULL DEFAULT NULL,
+    Event_date DATE NULL DEFAULT NULL,
+    Event_link VARCHAR(30) NULL DEFAULT NULL,
+    PRIMARY KEY (Event_id)
+);
+
+CREATE TABLE fest (
+    Event_id INT(254) NULL DEFAULT NULL,
+    time VARCHAR(100) NULL DEFAULT NULL,
+    title VARCHAR(100) NULL DEFAULT NULL,
+    details VARCHAR(1000) NULL DEFAULT NULL,
+    location VARCHAR(100) NULL DEFAULT NULL
+);
+
+CREATE TABLE competition (
+    Event_id INT(254) NULL DEFAULT NULL,
+    time VARCHAR(100) NULL DEFAULT NULL,
+    title VARCHAR(100) NULL DEFAULT NULL,
+    details VARCHAR(1000) NULL DEFAULT NULL,
+    location VARCHAR(100) NULL DEFAULT NULL,
+    enroll VARCHAR(100) NULL DEFAULT NULL
+);
+
+CREATE TABLE seminar (
+    Event_id INT(254) NULL DEFAULT NULL,
+    registration VARCHAR(100) NULL DEFAULT NULL,
+    time VARCHAR(100) NULL DEFAULT NULL,
+    title VARCHAR(100) NULL DEFAULT NULL,
+    details VARCHAR(1000) NULL DEFAULT NULL,
+    location VARCHAR(100) NULL DEFAULT NULL
+);
+
+CREATE TABLE user (
+    gsuite VARCHAR(100) NOT NULL,
+    id VARCHAR(8) NULL DEFAULT NULL,
+    PRIMARY KEY (gsuite)
+);
+
+CREATE TABLE attend (
+    Event_id INT(254) NULL DEFAULT NULL,
+    gsuite VARCHAR(100) NOT NULL,
+    PRIMARY KEY (gsuite)
+);
+
+
 
