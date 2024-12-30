@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post an Event</title>
+</head>
+<body>
+    <h1>Post an Event</h1>
+    <form method="POST">
+        <label for="event_name">Event Name:</label><br>
+        <input type="text" id="event_name" name="event_name" required><br><br>
+        
+        <label for="event_details">Event Details:</label><br>
+        <textarea id="event_details" name="event_details" required></textarea><br><br>
+        
+        <label for="event_date">Event Date:</label><br>
+        <input type="date" id="event_date" name="event_date" required><br><br>
+        
+        <label for="event_location">Event Location:</label><br>
+        <input type="text" id="event_location" name="event_location" required><br><br>
+        
+        <button type="submit">Submit</button>
+    </form>
+    
+    <h2>Event Posts</h2>
+    {% if posts %}
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <strong>{{ post.name }}</strong><br>
+                    {{ post.details }}<br>
+                    <em>{{ post.date.strftime('%Y-%m-%d') }}</em><br>
+                    Location: {{ post.location }}<br>
+                    <form action="/delete/{{ post.id }}" method="POST" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No events posted yet.</p>
+    {% endif %}
+</body>
+</html>
