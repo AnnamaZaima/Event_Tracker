@@ -2,7 +2,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #c74848;
+            background-color: #472424;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -13,6 +13,7 @@
         .title {
             font-size: 4em;
             margin-bottom: 40px;
+            color: white;
         }
         .login-container {
             background-color: white;
@@ -29,7 +30,7 @@
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #ccc;
+            border: 3px solid #ccc;
             border-radius: 4px;
         }
         .login-container input[type="submit"] {
@@ -61,19 +62,35 @@
 </head>
 <body>
     <div class="title">Eventify</div>
+       <!-- Display Flash Messages as Buttons -->
+       <div class="container mb-3">
+    </div>
+
     <div class="login-container">
         <h2>Login</h2>
-        <form action="\Login" method="POST">
+        <form action="\login" method="POST">
             <input type="email" name="email" placeholder="G-suite Email" required>
             <input type="id" name="id" placeholder="Id" required>
             <input type="submit" value="Login">
         </form>
-            <a class="club_login" href="club_login.html">
+        <!-- Display Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash {{ messages[0][0] }}">
+            {{ messages[0][1] }}
+        </div>
+    {% endif %}
+    {% endwith %}
+    <p>   </p>
+            <a class="club_login" href="club_login">
               Club Login
             </a>
             <p>   </p>
-            <a class="club_signup" href="signup.html">
+            <a class="club_signup" href="signup">
               Club Sign-up
             </a>
+            <!-- Display Flash Messages -->
+      
+
 </body>
 </html>
