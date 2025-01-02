@@ -2,7 +2,7 @@
   <style>
       body {
           font-family: Arial, sans-serif;
-          background-color:#c74848;
+          background-color:#472424;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -13,6 +13,7 @@
       .title {
           font-size: 4em;
           margin-bottom: 40px;
+          color: white;
       }
       .login-container {
           background-color: white;
@@ -29,7 +30,7 @@
           width: 100%;
           padding: 10px;
           margin: 10px 0;
-          border: 1px solid #ccc;
+          border: 3px solid #ccc;
           border-radius: 4px;
       }
       .login-container input[type="submit"] {
@@ -57,12 +58,21 @@
   <div class="title">Eventify</div>
   <div class="login-container">
       <h2>Club Login</h2>
-      <form action="https://www.youtube.com/" method="POST">
+      <form method="POST">
           <input type="text" name="username" placeholder="Username" required>
           <input type="password" name="password" placeholder="Password" required>
           <input type="submit" value="Login">
       </form>
-          <p class="forgot">Forgot password?</p>
+      <!-- Display Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash {{ messages[0][0] }}">
+            {{ messages[0][1] }}
+        </div>
+    {% endif %}
+    {% endwith %}
+    <p>   </p>
+          <f class="forgot">Forgot password?</f>
       </div>
   </div>
 </body>
