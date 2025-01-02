@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+  background-color: rgb(99, 127, 195);
+  background-position: center;
+  font-family: sans-serif;
+}
+
+.menu-bar {
+  background: rgb(41, 58, 104);
+  text-align: center;
+}
+
+.menu-bar ul {
+  display:flex;
+  list-style: none;
+  color: rgb(221, 225, 233);
+  justify-content: center;
+  align-items: center; 
+}
+
+.menu-bar ul li {
+  width: 120px;
+  margin: 15px;
+  padding: 15px;
+  color: rgb(221, 225, 233); 
+}
+.menu-bar ul li a
+{
+  text-decoration:none;
+  color: #fff;
+}
+
+.menu-bar ul li:hover {
+  background: rgb(78, 106, 175);
+  color: #000;
+}
+.active, .menu-bar ul li:hover
+{
+  background: #2e60b1;
+  border-radius: 3px;
+}
+.box
+{
+height:30px;
+display:flex;
+cursor:pointer;
+padding:10px 20px;
+background: #fff;
+border-radius:30px;
+align-items:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);   
+}
+.box:hover input {
+  width:400px;
+}
+
+.box input{
+  width:0;
+  outline:none;
+  border:none;
+  font-weight:500;
+  transition:0.8;
+  background:transition;
+}
+.box a .fas{
+  color:aquamarine;
+  font-size:18px;
+}
+
+.sub-menu-1
+{
+  display:none;
+}
+.menu-bar ul li:hover .sub-menu-1
+{
+  display:block;
+  position:absolute;
+  background:#2e60b1;
+  margin-top:15px;
+  margin-left:-15px;
+}
+.menu-bar ul li:hover .sub-menu-1 ul
+{
+  display:block;
+  margin:-10px;
+
+}
+.menu-bar ul li:hover .sub-menu-1 ul li
+{
+  width:150px;
+  padding:10px;
+  border-bottom:1px dotted #fff;
+  background:transparent;
+  border-radius:0;
+  text-align:left;
+}
+.menu-bar ul li:hover .sub-menu-1 ul li:last-child
+{
+  border-bottom:none;
+}
+.menu-bar ul li:hover .sub-menu-1 ul li a:hover
+{
+  color: #2e60b1;
+
+
+}
+
+
+        .logout-button {
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<html>
+<head>
+<title>Drop-down Menu design - </title>
+<link rel="stylesheet" href="C:\Users\Asus\Desktop\VS CODE\Event_tracker\style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
+
+<body>
+  <div class="menu-bar">
+    <div class="box">
+        
+        <input type="text" placeholder="Search..">
+        <button type="submit">Go</button>
+        <a href="#">
+            <i class="fa-solid fa-magnifying-glass"></i>
+           
+
+        </a>
+        
+    </div>
+
+
+<ul> 
+<li class="active"><a href="#">Home</a></li>
+<li><a href="#">About Us</a></li>
+<li><a href="#">Category</a>
+    <div class="sub-menu-1">
+        <ul>
+            <li><a href="#"> Seminar</a></li>
+            <li><a href="#"> Fest</a></li>
+            <li><a href="#"> Competition</a></li>
+        </ul>
+    </div>
+
+
+
+</li>
+<li><a href="#">Tickets</a></li>
+<li><a href="#">Highlights</a></li>
+<li><a href="#">FAQ</a></li> 
+
+</ul>
+        </div>
+    <h1>Welcome, {{ email }}</h1>
+    <h2>ID: {{ id }}</h2>
+    <a href="/logout" class="logout-button">Logout</a>
+</body>
+</html>
