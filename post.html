@@ -9,7 +9,7 @@
 
     <!-- Event Creation Form -->
     <h2>Create a New Event</h2>
-    <form method="POST" action="/">
+    <form method="POST" action="/event_post">
         <label for="event_name">Event Name:</label>
         <input type="text" id="event_name" name="event_name" required><br>
 
@@ -96,7 +96,7 @@
             <strong>Details:</strong> {{ post['details'] }}<br>
             <strong>Date:</strong> {{ post['Event_date'] }}<br>
             <strong>Link:</strong> {{ post['Event_link'] or 'N/A' }}<br>
-            <form method="POST" action="{{ url_for('delete_post', event_id=post['Event_id']) }}">
+            <form method="POST" action="/delete/{{ post['Event_id'] }}">
                 <button type="submit">Delete</button>
             </form>
         </li>
