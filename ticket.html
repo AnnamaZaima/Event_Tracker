@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Page</title>
+    <style>
+              body {
+  background-color: rgb(99, 127, 195);
+  background-position: center;
+  font-family: sans-serif;
+}
+.ticket-section, .ticket-list {
+  margin: 20px 0;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 5px;
+}
+
+.ticket-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ticket-list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.ticket-list th, .ticket-list td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.ticket-list th {
+  background-color: #2e60b1;
+  color: #fff;
+}
+</style>
+</head>
+
+<h1>Welcome, {{ username }}</h1>
+
+<form method="GET" action="/dashboard">
+    <label for="status">Filter by Status:</label>
+    <select id="status" name="status" onchange="this.form.submit()">
+        <option value="all" {% if filter == 'all' %}selected{% endif %}>All</option>
+        <option value="open" {% if filter == 'open' %}selected{% endif %}>Open</option>
+        <option value="closed" {% if filter == 'closed' %}selected{% endif %}>Closed</option>
+    </select>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Ticket ID</th>
+            <th>Subject</th>
+            <th>Status</th>
+            <th>Club</th>
+            <th>Response</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ticket in tickets %}
+        <tr>
+            <td>{{ ticket.ticket_id }}</td>
+            <td>{{ ticket.subject }}</td>
+            <td>{{ ticket.status }}</td>
+            <td>{{ ticket.club_name }}</td>
+            <td>{{ ticket.response if ticket.response else "Pending" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Submit a New Ticket</h3>
+<form method="POST" action="/submit_ticket">
+    <label for="club_name">Club:</label>
+    <input type="text" id="club_name" name="club_name" required>
+    <label for="subject">Subject:</label>
+    <input type="text" id="subject" name="subject" required>
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" required></textarea>
+    <button type="submit">Submit</button>
+</form>
