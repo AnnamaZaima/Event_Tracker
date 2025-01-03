@@ -157,7 +157,7 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
 
 
 </li>
-<li><a href="#">Tickets</a></li>
+<li><a href="/ticket">Tickets</a></li>
 <li><a href="#">Highlights</a></li>
 <li><a href="#">FAQ</a></li> 
 
@@ -166,5 +166,17 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
     <h1>Welcome, {{ email }}</h1>
     <h2>ID: {{ id }}</h2>
     <a href="/logout" class="logout-button">Logout</a>
+
+    <ul>
+      {% for post in posts %}
+      <li>
+          <strong>ID:</strong> {{ post['Event_id'] }}<br>
+          <strong>Name:</strong> {{ post['Event_name'] }}<br>
+          <strong>Details:</strong> {{ post['details'] }}<br>
+          <strong>Date:</strong> {{ post['Event_date'] }}<br>
+          <strong>Link:</strong> {{ post['Event_link'] or 'N/A' }}<br>
+      </li>
+      {% endfor %}
+  </ul>
 </body>
 </html>
