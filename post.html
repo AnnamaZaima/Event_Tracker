@@ -2,44 +2,105 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post an Event</title>
+    <title>Event Management</title>
 </head>
 <body>
-    <h1>Post an Event</h1>
-    <form method="POST">
-        <label for="event_name">Event Name:</label><br>
-        <input type="text" id="event_name" name="event_name" required><br><br>
-        
-        <label for="event_details">Event Details:</label><br>
-        <textarea id="event_details" name="event_details" required></textarea><br><br>
-        
-        <label for="event_date">Event Date:</label><br>
-        <input type="date" id="event_date" name="event_date" required><br><br>
-        
-        <label for="event_location">Event Location:</label><br>
-        <input type="text" id="event_location" name="event_location" required><br><br>
-        
-        <button type="submit">Submit</button>
+    <h1>Event Management</h1>
+
+    <!-- Event Creation Form -->
+    <h2>Create a New Event</h2>
+    <form method="POST" action="/">
+        <label for="event_name">Event Name:</label>
+        <input type="text" id="event_name" name="event_name" required><br>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="event_details">Details:</label>
+        <textarea id="event_details" name="event_details" required></textarea><br>
+
+        <label for="event_date">Date:</label>
+        <input type="date" id="event_date" name="event_date" required><br>
+
+        <label for="event_link">Event Link:</label>
+        <input type="text" id="event_link" name="event_link"><br>
+
+        <button type="submit">Create Event</button>
     </form>
-    
-    <h2>Event Posts</h2>
-    {% if posts %}
-        <ul>
-            {% for post in posts %}
-                <li>
-                    <strong>{{ post.name }}</strong><br>
-                    {{ post.details }}<br>
-                    <em>{{ post.date.strftime('%Y-%m-%d') }}</em><br>
-                    Location: {{ post.location }}<br>
-                    <form action="/delete/{{ post.id }}" method="POST" style="display:inline;">
-                        <button type="submit">Delete</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No events posted yet.</p>
-    {% endif %}
+
+    <!-- Event Options Form -->
+    <h2>Manage Event Options</h2>
+    <form method="POST" action="/options">
+        <label for="event_id">Event ID:</label>
+        <input type="number" id="event_id" name="event_id" required><br>
+
+        <fieldset>
+            <legend>Choose Event Types:</legend>
+            <input type="checkbox" id="competition" name="event_type" value="competition">
+            <label for="competition">Competition</label><br>
+
+            <input type="checkbox" id="fest" name="event_type" value="fest">
+            <label for="fest">Fest</label><br>
+
+            <input type="checkbox" id="seminar" name="event_type" value="seminar">
+            <label for="seminar">Seminar</label><br>
+        </fieldset>
+
+        <!-- Fields for Competition -->
+        <h3>Competition Details</h3>
+        <label for="time_competition">Time:</label>
+        <input type="text" id="time_competition" name="time_competition"><br>
+        <label for="title_competition">Title:</label>
+        <input type="text" id="title_competition" name="title_competition"><br>
+        <label for="details_competition">Details:</label>
+        <textarea id="details_competition" name="details_competition"></textarea><br>
+        <label for="location_competition">Location:</label>
+        <input type="text" id="location_competition" name="location_competition"><br>
+        <label for="extra_field_competition">Enroll:</label>
+        <input type="text" id="extra_field_competition" name="extra_field_competition"><br>
+
+        <!-- Fields for Fest -->
+        <h3>Fest Details</h3>
+        <label for="time_fest">Time:</label>
+        <input type="text" id="time_fest" name="time_fest"><br>
+        <label for="title_fest">Title:</label>
+        <input type="text" id="title_fest" name="title_fest"><br>
+        <label for="details_fest">Details:</label>
+        <textarea id="details_fest" name="details_fest"></textarea><br>
+        <label for="location_fest">Location:</label>
+        <input type="text" id="location_fest" name="location_fest"><br>
+
+        <!-- Fields for Seminar -->
+        <h3>Seminar Details</h3>
+        <label for="time_seminar">Time:</label>
+        <input type="text" id="time_seminar" name="time_seminar"><br>
+        <label for="title_seminar">Title:</label>
+        <input type="text" id="title_seminar" name="title_seminar"><br>
+        <label for="details_seminar">Details:</label>
+        <textarea id="details_seminar" name="details_seminar"></textarea><br>
+        <label for="location_seminar">Location:</label>
+        <input type="text" id="location_seminar" name="location_seminar"><br>
+        <label for="extra_field_seminar">Registration:</label>
+        <input type="text" id="extra_field_seminar" name="extra_field_seminar"><br>
+
+        <button type="submit">Submit Event Options</button>
+    </form>
+
+    <!-- Display Existing Events -->
+    <h2>Existing Events</h2>
+    <ul>
+        {% for post in posts %}
+        <li>
+            <strong>ID:</strong> {{ post['Event_id'] }}<br>
+            <strong>Name:</strong> {{ post['Event_name'] }}<br>
+            <strong>Details:</strong> {{ post['details'] }}<br>
+            <strong>Date:</strong> {{ post['Event_date'] }}<br>
+            <strong>Link:</strong> {{ post['Event_link'] or 'N/A' }}<br>
+            <form method="POST" action="{{ url_for('delete_post', event_id=post['Event_id']) }}">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
