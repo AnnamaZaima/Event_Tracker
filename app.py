@@ -2,6 +2,8 @@ from flask import Flask, render_template,session, request, redirect, url_for, fl
 import mysql.connector
 import re
 
+
+
 app = Flask(__name__)
 app.secret_key = "shafin"  # Change this to a strong secret key
 
@@ -34,7 +36,7 @@ def user_login():
             query = "SELECT * FROM user WHERE gsuite = %s"
             cursor.execute(query, (email,))
             result = cursor.fetchone()
-            print(result)
+ 
             if result:
                 # Email exists, check if the IDs match
                 if result['id'] == user_id:
@@ -48,6 +50,13 @@ def user_login():
                 insert_query = "INSERT INTO user (gsuite, id) VALUES (%s, %s)"
                 cursor.execute(insert_query, (email, user_id))
                 connection.commit()
+                connection = mysql.connector.connect(**db_config)
+                cursor = connection.cursor(dictionary=True)
+
+            # Check if the email already exists in the user table
+                query = "SELECT * FROM user WHERE gsuite = %s"
+                cursor.execute(query, (email,))
+                result = cursor.fetchone()
                 session['email'] = result['gsuite']
                 return redirect('/user_dashboard')
 
@@ -157,7 +166,13 @@ def user_dashboard():
             if user:
                 email=email.split(".")
                 id = user['id']
-                return render_template('user_dashboard.html', email=email[0].upper(), id=id)
+                connection = mysql.connector.connect(**db_config)
+                cursor = connection.cursor(dictionary=True)
+                cursor.execute("SELECT * FROM event")
+                posts = cursor.fetchall()
+                cursor.close()
+                connection.close()
+                return render_template('user_dashboard.html', email=email[0].upper(), id=id, posts=posts)
             else:
                 flash('User not found.', 'danger')
                 return redirect('/login')
@@ -167,12 +182,207 @@ def user_dashboard():
     else:
         flash('Please log in first.', 'danger')
         return redirect('/login')
+    
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM event")
+    posts = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return render_template('/user_dashboard.html', posts=posts)
+    
+   
+
+
+
+@app.route('/ticket')
+def ticket():
+   
+   return render_template('/ticket.html')
+
+
+
+
+@app.route('/admin_ticket', methods=['GET'])
+def admin_ticket():
+  if 'username' in session:
+   username = session['username']
+   try:
+      conn = mysql.connector.connect(**db_config)
+      cursor = conn.cursor(dictionary=True)
+      cursor.execute("SELECT club_name FROM club WHERE username = %s", (username,))
+      club = cursor.fetchone()
+      if club:
+         club_name = club['club_name']
+         ticket_status = request.args.get('status', 'all')
+         if ticket_status == 'all':
+            query = """
+            SELECT ticket_id, user_email, subject, message, status, created_at, response
+            FROM ticket WHERE club_name = %s
+             """
+            cursor.execute(query, (club_name,))
+         else:
+            query = """
+            SELECT ticket_id, user_email, subject, message, status, created_at, response
+            FROM ticket WHERE club_name = %s AND status = %s
+            """
+            cursor.execute(query, (club_name, ticket_status))
+         tickets = cursor.fetchall()
+         return render_template('admin_ticket.html', tickets=tickets, club_name=club_name, filter=ticket_status)
+   except mysql.connector.Error as err:
+      flash(f"Error: {err}", 'danger')
+      return redirect('/admin_ticket')
+   return render_template('/admin_ticket.html')
+ 
+
+
+@app.route('/submit_ticket', methods=['POST'])
+def submit_ticket():
+      # Replace with logged-in user's email
+    club_name = request.form['club_name']
+    subject = request.form['subject']
+    message = request.form['message']
+    if 'email' in session:
+      user_email = session['email']
+      try:
+         conn = mysql.connector.connect(**db_config)
+         cursor = conn.cursor(dictionary=True)
+
+    # Insert the ticket into the database
+    
+         query = """ INSERT INTO ticket (user_email, club_name, subject, message, status) VALUES (%s, %s, %s, %s, 'open')"""
+         cursor.execute(query, (user_email, club_name, subject, message))
+         conn.commit()
+
+         cursor.close()
+         conn.close()
+         return redirect('/ticket')
+      except mysql.connector.Error as err:
+            flash(f"Error: {err}", 'danger')
+            return redirect('/ticket')
+    return redirect('/ticket')
+
+
+@app.route('/club/respond/<int:ticket_id>', methods=['POST'])
+def respond_ticket(ticket_id):
+    response = request.form['response']
+    if 'username' in session:
+        username = session['username']
+        try:
+            conn = mysql.connector.connect(**db_config)
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute("SELECT club_name FROM club WHERE username = %s", (username,))
+            club = cursor.fetchone()
+            cursor.close()
+            conn.close()
+
+            if club:
+                club_name = club['club_name']
+                try:
+                  conn = mysql.connector.connect(**db_config)
+                  cursor = conn.cursor(dictionary=True)
+                  query = """
+                     UPDATE ticket
+                     SET response = %s, status = 'closed'
+                     WHERE ticket_id = %s AND club_name = %s AND status = 'open'
+                     """
+                  cursor.execute(query, (response, ticket_id, club_name))
+                  conn.commit()
+                  cursor.close()
+                  conn.close()
+                  return redirect('/ticket')
+                except mysql.connector.Error as err:
+                   flash(f"Error: {err}", 'danger')
+                   return redirect('/ticket')
+        except mysql.connector.Error as err:
+            flash(f"Error: {err}", 'danger')
+            return redirect('/ticket')
+    return redirect('/ticket')
+
+#posting_event
+@app.route('/event_post', methods=['GET', 'POST'])
+def event_post():
+    if request.method == 'POST':
+        event_name = request.form.get('event_name')
+        username = request.form.get('username')
+        event_details = request.form.get('event_details')
+        event_date = request.form.get('event_date')
+        event_link = request.form.get('event_link')
+
+        if event_name and username and event_details and event_date:
+            connection = mysql.connector.connect(**db_config)
+            cursor = connection.cursor()
+            cursor.execute(
+                "INSERT INTO event (Event_name, username, details, Event_date, Event_link) VALUES (%s, %s, %s, %s, %s)",
+                (event_name, username, event_details, event_date, event_link)
+            )
+            connection.commit()
+            cursor.close()
+            connection.close()
+            return redirect('/event_post')
+
+    # Fetch all posts for display
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM event")
+    posts = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return render_template('/post.html', posts=posts)
+
+@app.route('/delete/<int:event_id>', methods=['POST'])
+def delete_post(event_id):
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM event WHERE Event_id = %s", (event_id,))
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return redirect('/event_post')
+
+@app.route('/options', methods=['GET', 'POST'])
+def event_options():
+    if request.method == 'POST':
+        event_id = request.form.get('event_id')
+        selected_options = request.form.getlist('event_type')
+
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+
+        for option in selected_options:
+            time = request.form.get(f'time_{option}')
+            title = request.form.get(f'title_{option}')
+            details = request.form.get(f'details_{option}')
+            location = request.form.get(f'location_{option}')
+            extra_field = request.form.get(f'extra_field_{option}', None)
+
+            if option == 'competition':
+                cursor.execute(
+                    "INSERT INTO competition (Event_id, time, title, details, location, enroll) VALUES (%s, %s, %s, %s, %s, %s)",
+                    (event_id, time, title, details, location, extra_field)
+                )
+            elif option == 'fest':
+                cursor.execute(
+                    "INSERT INTO fest (Event_id, time, title, details, location) VALUES (%s, %s, %s, %s, %s)",
+                    (event_id, time, title, details, location)
+                )
+            elif option == 'seminar':
+                cursor.execute(
+                    "INSERT INTO seminar (Event_id, registration, time, title, details, location) VALUES (%s, %s, %s, %s, %s, %s)",
+                    (event_id, extra_field, time, title, details, location)
+                )
+        connection.commit()
+        cursor.close()
+        connection.close()
+        return redirect('/event_post')
+    return render_template('/post.html')
 
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect('/login')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
