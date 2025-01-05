@@ -39,19 +39,34 @@
   background-color: #2e60b1;
   color: #fff;
 }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #2e60b1;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+
 </style>
 </head>
 
 <h1>Welcome, {{ username }}</h1>
 
-<form method="GET" action="/dashboard">
-    <label for="status">Filter by Status:</label>
-    <select id="status" name="status" onchange="this.form.submit()">
-        <option value="all" {% if filter == 'all' %}selected{% endif %}>All</option>
-        <option value="open" {% if filter == 'open' %}selected{% endif %}>Open</option>
-        <option value="closed" {% if filter == 'closed' %}selected{% endif %}>Closed</option>
-    </select>
-</form>
 
 <table>
     <thead>
