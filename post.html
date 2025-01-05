@@ -2,7 +2,99 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Management</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #4a90e2;
+        }
+        form {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        form label {
+            display: block;
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+        form input, form textarea, form button, form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        form button {
+            background-color: #4a90e2;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        form button:hover {
+            background-color: #357ab8;
+        }
+        fieldset {
+            border: 1px solid #ddd;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        legend {
+            font-size: 18px;
+            color: #4a90e2;
+            font-weight: bold;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            background: #fff;
+            margin: 10px auto;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+        }
+        ul li strong {
+            color: #333;
+        }
+        ul li ul {
+            padding-left: 20px;
+        }
+        ul li ul li {
+            background: none;
+            padding: 5px 0;
+            border: none;
+            box-shadow: none;
+        }
+        ul li button {
+            margin-top: 10px;
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        ul li button:hover {
+            background-color: #c0392b;
+        }
+    </style>
 </head>
 <body>
     <h1>Event Management</h1>
@@ -11,79 +103,67 @@
     <h2>Create a New Event</h2>
     <form method="POST" action="/event_post">
         <label for="event_name">Event Name:</label>
-        <input type="text" id="event_name" name="event_name" required><br>
+        <input type="text" id="event_name" name="event_name" required>
 
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br>
+        <input type="text" id="username" name="username" required>
 
         <label for="event_details">Details:</label>
-        <textarea id="event_details" name="event_details" required></textarea><br>
+        <textarea id="event_details" name="event_details" required></textarea>
 
         <label for="event_date">Date:</label>
-        <input type="date" id="event_date" name="event_date" required><br>
+        <input type="date" id="event_date" name="event_date" required>
 
         <label for="event_link">Event Link:</label>
-        <input type="text" id="event_link" name="event_link"><br>
-
-        <button type="submit">Create Event</button>
-    </form>
-
-    <!-- Event Options Form -->
-    <h2>Manage Event Options</h2>
-    <form method="POST" action="/options">
-        <label for="event_id">Event ID:</label>
-        <input type="number" id="event_id" name="event_id" required><br>
+        <input type="text" id="event_link" name="event_link">
 
         <fieldset>
-            <legend>Choose Event Types:</legend>
+            <legend>Event Options:</legend>
             <input type="checkbox" id="competition" name="event_type" value="competition">
-            <label for="competition">Competition</label><br>
+            <label for="competition">Competition</label>
+            <div id="competition_details">
+                <label for="time_competition">Time:</label>
+                <input type="text" id="time_competition" name="time_competition">
+                <label for="title_competition">Title:</label>
+                <input type="text" id="title_competition" name="title_competition">
+                <label for="details_competition">Details:</label>
+                <textarea id="details_competition" name="details_competition"></textarea>
+                <label for="location_competition">Location:</label>
+                <input type="text" id="location_competition" name="location_competition">
+                <label for="extra_field_competition">Enroll:</label>
+                <input type="text" id="extra_field_competition" name="extra_field_competition">
+            </div>
 
             <input type="checkbox" id="fest" name="event_type" value="fest">
-            <label for="fest">Fest</label><br>
+            <label for="fest">Fest</label>
+            <div id="fest_details">
+                <label for="time_fest">Time:</label>
+                <input type="text" id="time_fest" name="time_fest">
+                <label for="title_fest">Title:</label>
+                <input type="text" id="title_fest" name="title_fest">
+                <label for="details_fest">Details:</label>
+                <textarea id="details_fest" name="details_fest"></textarea>
+                <label for="location_fest">Location:</label>
+                <input type="text" id="location_fest" name="location_fest">
+            </div>
 
             <input type="checkbox" id="seminar" name="event_type" value="seminar">
-            <label for="seminar">Seminar</label><br>
+            <label for="seminar">Seminar</label>
+            <div id="seminar_details">
+                <label for="time_seminar">Time:</label>
+                <input type="text" id="time_seminar" name="time_seminar">
+                <label for="title_seminar">Title:</label>
+                <input type="text" id="title_seminar" name="title_seminar">
+                <label for="details_seminar">Details:</label>
+                <textarea id="details_seminar" name="details_seminar"></textarea>
+                <label for="location_seminar">Location:</label>
+                <input type="text" id="location_seminar" name="location_seminar">
+                <label for="extra_field_seminar">Registration:</label>
+                <input type="text" id="extra_field_seminar" name="extra_field_seminar">
+            </div>
         </fieldset>
 
-        <!-- Fields for Competition -->
-        <h3>Competition Details</h3>
-        <label for="time_competition">Time:</label>
-        <input type="text" id="time_competition" name="time_competition"><br>
-        <label for="title_competition">Title:</label>
-        <input type="text" id="title_competition" name="title_competition"><br>
-        <label for="details_competition">Details:</label>
-        <textarea id="details_competition" name="details_competition"></textarea><br>
-        <label for="location_competition">Location:</label>
-        <input type="text" id="location_competition" name="location_competition"><br>
-        <label for="extra_field_competition">Enroll:</label>
-        <input type="text" id="extra_field_competition" name="extra_field_competition"><br>
-
-        <!-- Fields for Fest -->
-        <h3>Fest Details</h3>
-        <label for="time_fest">Time:</label>
-        <input type="text" id="time_fest" name="time_fest"><br>
-        <label for="title_fest">Title:</label>
-        <input type="text" id="title_fest" name="title_fest"><br>
-        <label for="details_fest">Details:</label>
-        <textarea id="details_fest" name="details_fest"></textarea><br>
-        <label for="location_fest">Location:</label>
-        <input type="text" id="location_fest" name="location_fest"><br>
-
-        <!-- Fields for Seminar -->
-        <h3>Seminar Details</h3>
-        <label for="time_seminar">Time:</label>
-        <input type="text" id="time_seminar" name="time_seminar"><br>
-        <label for="title_seminar">Title:</label>
-        <input type="text" id="title_seminar" name="title_seminar"><br>
-        <label for="details_seminar">Details:</label>
-        <textarea id="details_seminar" name="details_seminar"></textarea><br>
-        <label for="location_seminar">Location:</label>
-        <input type="text" id="location_seminar" name="location_seminar"><br>
-        <label for="extra_field_seminar">Registration:</label>
-        <input type="text" id="extra_field_seminar" name="extra_field_seminar"><br>
-
-        <button type="submit">Submit Event Options</button>
+        <button type="submit">Create Event</button>
     </form>
 
     <!-- Display Existing Events -->
@@ -96,7 +176,25 @@
             <strong>Details:</strong> {{ post['details'] }}<br>
             <strong>Date:</strong> {{ post['Event_date'] }}<br>
             <strong>Link:</strong> {{ post['Event_link'] or 'N/A' }}<br>
-            <form method="POST" action="/delete/{{ post['Event_id'] }}">
+            <strong>Competitions:</strong>
+            <ul>
+                {% for competition in post['competitions'] %}
+                <li>{{ competition['title'] }} - {{ competition['time'] }}</li>
+                {% endfor %}
+            </ul>
+            <strong>Fests:</strong>
+            <ul>
+                {% for fest in post['fests'] %}
+                <li>{{ fest['title'] }} - {{ fest['time'] }}</li>
+                {% endfor %}
+            </ul>
+            <strong>Seminars:</strong>
+            <ul>
+                {% for seminar in post['seminars'] %}
+                <li>{{ seminar['title'] }} - {{ seminar['time'] }}</li>
+                {% endfor %}
+            </ul>
+            <form method="POST" action="{{ url_for('delete_post', event_id=post['Event_id']) }}">
                 <button type="submit">Delete</button>
             </form>
         </li>
