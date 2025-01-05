@@ -182,23 +182,40 @@ def user_dashboard():
     else:
         flash('Please log in first.', 'danger')
         return redirect('/login')
-    
-    connection = mysql.connector.connect(**db_config)
-    cursor = connection.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM event")
-    posts = cursor.fetchall()
-    cursor.close()
-    connection.close()
-    return render_template('/user_dashboard.html', posts=posts)
+   
     
    
 
 
-
-@app.route('/ticket')
+@app.route('/ticket', methods=['GET'])
 def ticket():
-   
-   return render_template('/ticket.html')
+  if 'email' in session:
+   user_email = session['email']
+   ticket_status = request.args.get('status', 'all')
+   try:
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    if ticket_status == 'all':
+        query = """
+            SELECT ticket_id, subject, status, created_at, response, club_name
+            FROM ticket WHERE user_email = %s
+        """
+        cursor.execute(query, (user_email,))
+    else:
+        query = """
+            SELECT ticket_id, subject, status, created_at, response, club_name
+            FROM ticket WHERE user_email = %s AND status = %s
+        """
+        cursor.execute(query, (user_email, ticket_status))
+
+    tickets = cursor.fetchall()
+    name=user_email.split(".")
+    return render_template('/ticket.html', tickets=tickets, username=name[0].upper(), filter=ticket_status)
+   except mysql.connector.Error as err:
+      flash(f"Error: {err}", 'danger')
+      return redirect('/ticket')
+  return render_template('/ticket.html')
+
 
 
 
@@ -290,7 +307,7 @@ def respond_ticket(ticket_id):
                   conn.commit()
                   cursor.close()
                   conn.close()
-                  return redirect('/ticket')
+                  return redirect('/admin_ticket')
                 except mysql.connector.Error as err:
                    flash(f"Error: {err}", 'danger')
                    return redirect('/ticket')
