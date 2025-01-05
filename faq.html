@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Eventify</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #2e60b1;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .content {
+            padding: 40px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #2e60b1;
+            margin-bottom: 20px;
+        }
+
+        .faq-container {
+            margin-top: 20px;
+        }
+
+        .faq-item {
+            background-color: #fff;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+        }
+
+        .faq-item h3 {
+            margin: 0;
+            font-size: 1.3em;
+            cursor: pointer;
+            color: #2e60b1;
+        }
+
+        .faq-item p {
+            display: none;
+            margin-top: 10px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .faq-item.active p {
+            display: block;
+        }
+
+        footer {
+            background-color: #2e60b1;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Frequently Asked Questions (FAQ)</h1>
+        <p>Everything you need to know about our events</p>
+    </header>
+
+    <div class="content">
+        <section>
+            <h2 class="section-title">General Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <h3>How do I find events on Eventify?</h3>
+                    <p>You can easily find events by browsing through our categories, such as seminars, festivals, and competitions. Use the search bar to look for specific events or filter by date and location.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>How can I register for an event?</h3>
+                    <p>To register for an event, simply visit the event page and click on the "Register" or "Tickets" button. Follow the instructions to complete your registration or purchase.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What types of events does the university host?</h3>
+                    <p>The university hosts a variety of events, including academic seminars, cultural festivals, workshops, competitions, career fairs, and alumni meetups.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I cancel or transfer my event registration?</h3>
+                    <p>Cancellation and transfer policies vary by event. Please check the event details for specific instructions. If allowed, cancellations or transfers can be done through your account.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What happens if I miss an event I registered for?</h3>
+                    <p>If you miss an event, please check with the event organizer for any possible rescheduling or alternative viewing options. Unfortunately, we cannot offer refunds for missed events unless specified in the event's terms.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Will food and beverages be provided?</h3>
+                    <p>Some events offer complimentary refreshments, while others may have food vendors on-site. Check the event details for specific information.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>How do I contact event organizers?</h3>
+                    <p>Event organizers’ contact information can be found on the event page. You can also use the "Contact" button or reach out to us for general inquiries, and we will forward your questions to the appropriate organizer.</p>
+                </div>
+        
+        
+            </div>
+        </section>
+
+        <a href="#" class="cta-button">Contact Us for More Questions</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Eventify. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Toggle FAQ answers
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            item.querySelector('h3').addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+
+</body>
+</html>
