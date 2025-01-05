@@ -42,39 +42,33 @@
   background: #2e60b1;
   border-radius: 3px;
 }
-.search-container {
-            display: flex;
-            justify-content: flex-end;
-            padding: 10px 20px;
-        }
+.box
+{
+height:30px;
+display:flex;
+cursor:pointer;
+padding:10px 20px;
+background: #fff;
+border-radius:30px;
+align-items:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);   
+}
+.box:hover input {
+  width:400px;
+}
 
-        .search-container .box {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .search-container input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 300px;
-        }
-
-        .search-container button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .search-container button:hover {
-            background-color: #0056b3;
-        }
+.box input{
+  width:0;
+  outline:none;
+  border:none;
+  font-weight:500;
+  transition:0.8;
+  background:transition;
+}
+.box a .fas{
+  color:aquamarine;
+  font-size:18px;
+}
 
 .sub-menu-1
 {
@@ -115,6 +109,73 @@
 }
 
 
+  .filter-buttons {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .filter-buttons button {
+    padding: 10px 15px;
+    margin-right: 10px;
+    background-color: #2e60b1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .filter-buttons button:hover {
+    background-color: #1d4d8f;
+  }
+
+  .event-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .event-box {
+    background: linear-gradient(to bottom, #ffffff, #f3f3f3);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 20px;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .event-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  .event-box strong {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .event-box .event-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2e60b1;
+        }
+
+        .event-box .event-link {
+          display: inline-block;
+          margin-top: 10px;
+          color: #1d4d8f;
+          text-decoration: none;
+        }
+
+        .event-box .event-link:hover {
+            text-decoration: underline;
+            color: #1a3d7f;
+        }
+
         .logout-button {
             padding: 10px 20px;
             background-color: red;
@@ -135,8 +196,7 @@
 
 <body>
   <div class="menu-bar">
-    <div class="title">Eventify</div>
-    <div class="search-container">
+    <div class="box">
         
         <input type="text" placeholder="Search..">
         <button type="submit">Go</button>
@@ -168,22 +228,72 @@
 <li><a href="#">Highlights</a></li>
 <li><a href="#">FAQ</a></li> 
 
+
+
 </ul>
         </div>
     <h1>Welcome, {{ email }}</h1>
     <h2>ID: {{ id }}</h2>
-    <a href="/logout" class="logout-button">Logout</a>
 
-    <ul>
-      {% for post in posts %}
-      <li>
-          <strong>ID:</strong> {{ post['Event_id'] }}<br>
-          <strong>Name:</strong> {{ post['Event_name'] }}<br>
-          <strong>Details:</strong> {{ post['details'] }}<br>
-          <strong>Date:</strong> {{ post['Event_date'] }}<br>
-          <strong>Link:</strong> {{ post['Event_link'] or 'N/A' }}<br>
-      </li>
-      {% endfor %}
-  </ul>
+  <!--ADRITA-->
+  <div class="filter-buttons">
+    <button onclick="fetchEvents('all')">All</button>
+    <button onclick="fetchEvents('today')">Today</button>
+    <button onclick="fetchEvents('this_week')">This Week</button>
+    <button onclick="fetchEvents('this_month')">This Month</button>
+  </div>
+  <ul id="event-list"></ul>
+
+    
+    <script>
+      function fetchEvents(filter) {
+    fetch(`/filtered_events?filter=${filter}`)
+        .then(response => response.json())
+        .then(data => {
+            const eventList = document.getElementById('event-list');
+            eventList.innerHTML = ''; // Clear the previous events
+
+            data.events.forEach(event => {
+                const eventBox = document.createElement('div');
+                eventBox.className = 'event-box';
+
+                eventBox.innerHTML = `
+                    <div class="event-title">${event.Event_name}</div>
+                    <strong>Details:</strong> ${event.details}<br>
+                    <strong>Date:</strong> ${event.Event_date}<br>
+                    <strong>Time:</strong> ${event.Event_time || 'N/A'}<br>
+                    <strong>Location:</strong> ${event.Event_location || 'N/A'}<br>
+                    <strong>Link:</strong> 
+                    <a href="${event.Event_link || '#'}" class="event-link" target="_blank">
+                        ${event.Event_link || 'N/A'}
+                    </a>
+                `;
+
+                eventList.appendChild(eventBox);
+            });
+        })
+        .catch(error => console.error('Error fetching events:', error));
+}
+
+      fetchEvents('all');
+  </script>
+  
+</div><div class="event-container">
+  {% for post in posts %}
+  <div class="event-box">
+      <div class="event-title">{{ post['Event_name'] }}</div>
+      <strong>Details:</strong> {{ post['details'] }}<br>
+      <strong>Date:</strong> {{ post['Event_date'] }}<br>
+      <strong>Time:</strong> {{ post['Event_time'] or 'N/A' }}<br>
+      <strong>Location:</strong> {{ post['Event_location'] or 'N/A' }}<br>
+      <strong>Link:</strong>
+      <a href="{{ post['Event_link'] or '#' }}" class="event-link" target="_blank">
+          {{ post['Event_link'] or 'N/A' }}
+      </a>
+  </div>
+  {% endfor %}
+</div>
+
+  <a href="/logout" class="logout-button">Logout</a>
 </body>
 </html>
