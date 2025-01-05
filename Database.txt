@@ -14,7 +14,7 @@ CREATE TABLE club (
 );
 
 CREATE TABLE event (
-    Event_id INT(254) NOT NULL,
+    Event_id INT(254) NOT NULL AUTO_INCREMENT,
     Event_name VARCHAR(100) NULL DEFAULT NULL,
     username VARCHAR(20) NOT NULL,
     details MEDIUMTEXT NULL DEFAULT NULL,
