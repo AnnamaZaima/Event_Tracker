@@ -8,6 +8,12 @@
   font-family: sans-serif;
 }
 
+.title {
+            font-size: 3em;
+            margin-bottom: 40px;
+            color: black;
+        }
+
 .menu-bar {
   background: rgb(41, 58, 104);
   text-align: center;
@@ -107,7 +113,15 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
 
 
 }
-
+.create-button {
+            padding: 10px 20px;
+            background-color: blue;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: inline-block;
+        }
 
         .logout-button {
             padding: 10px 20px;
@@ -123,7 +137,9 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
 
 <html>
 <head>
+ 
 <title>Drop-down Menu design - </title>
+<div class="title">Eventify</div>
 <link rel="stylesheet" href="C:\Users\Asus\Desktop\VS CODE\Event_tracker\style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
 
@@ -157,7 +173,7 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
 
 
 </li>
-<li><a href="#">Tickets</a></li>
+<li><a href="/admin_ticket">Tickets</a></li>
 <li><a href="#">Highlights</a></li>
 <li><a href="#">FAQ</a></li> 
 
@@ -165,6 +181,7 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
         </div>
     <h1>Welcome, {{ username }}</h1>
     <h2>Club: {{ club_name }}</h2>
+    <a href="/event_post" class="create-button">create event</a>
     <a href="/logout" class="logout-button">Logout</a>
 </body>
 </html>
