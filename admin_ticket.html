@@ -39,10 +39,33 @@
   background-color: #2e60b1;
   color: #fff;
 }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #2e60b1;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+
 </style>
 </head>
 
-<h1>{{ club_name }} Dashboard</h1>
+<h1>{{ club_name }} Tickets</h1>
 
 <form method="GET" action="/admin_ticket">
     <label for="status">Filter by Status:</label>
