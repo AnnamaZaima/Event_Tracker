@@ -65,4 +65,22 @@ def event_post():
 
     cursor.close()
     connection.close()
+
     return render_template('/post.html', posts=posts)
+
+
+@app.route('/delete_post/<int:event_id>', methods=['POST'])
+def delete_post(event_id):
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor()
+
+    # Delete the event and its related options
+    cursor.execute("DELETE FROM competition WHERE Event_id = %s", (event_id,))
+    cursor.execute("DELETE FROM fest WHERE Event_id = %s", (event_id,))
+    cursor.execute("DELETE FROM seminar WHERE Event_id = %s", (event_id,))
+    cursor.execute("DELETE FROM event WHERE Event_id = %s", (event_id,))
+    connection.commit()
+
+    cursor.close()
+    connection.close()
+    return redirect('/event_post')
