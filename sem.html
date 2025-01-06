@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(99, 127, 195);
+            color: white;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        .results-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 10px;
+        }
+
+        .result-card {
+            background: linear-gradient(to bottom, #ffffff, #f3f3f3);
+            color: black;
+            width: 300px;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .result-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2e60b1;
+        }
+
+        .result-details {
+            font-size: 14px;
+            margin: 10px 0;
+        }
+
+        .result-link {
+            color: #1d4d8f;
+            text-decoration: none;
+        }
+
+        .result-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Seminar</h1>
+
+    {% if results %}
+    <div class="results-container">
+        {% for result in results %}
+        <div class="result-card">
+            <div class="result-title">{{ result['title'] }}</div>
+            <div class="result-details">
+                <strong>Details:</strong> {{ result['details'] }}<br>
+                <strong>Time:</strong> {{ result['time'] or 'N/A' }}<br>
+                <strong>Location:</strong> {{ result['location'] or 'N/A' }}<br>
+                <strong>Link:</strong>
+                <a href="{{ result['Event_link'] or '#' }}" class="result-link" target="_blank">
+                    {{ result['registration'] or 'N/A' }}
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No results found for "{{ query }}". Please try again.</p>
+    {% endif %}
+</body>
+</html>
