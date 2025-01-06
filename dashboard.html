@@ -8,12 +8,6 @@
   font-family: sans-serif;
 }
 
-.title {
-            font-size: 3em;
-            margin-bottom: 40px;
-            color: black;
-        }
-
 .menu-bar {
   background: rgb(41, 58, 104);
   text-align: center;
@@ -82,6 +76,7 @@
             background-color: #0056b3;
         }
 
+
 .sub-menu-1
 {
   display:none;
@@ -115,11 +110,79 @@
 }
 .menu-bar ul li:hover .sub-menu-1 ul li a:hover
 {
-  color: #2e60b1;
+  color: black;
 
 
 }
-.create-button {
+
+
+  .filter-buttons {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .filter-buttons button {
+    padding: 10px 15px;
+    margin-right: 10px;
+    background-color: #2e60b1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .filter-buttons button:hover {
+    background-color: #1d4d8f;
+  }
+
+  .event-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .event-box {
+    background: linear-gradient(to bottom, #ffffff, #f3f3f3);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 20px;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .event-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  .event-box strong {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .event-box .event-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2e60b1;
+        }
+
+        .event-box .event-link {
+          display: inline-block;
+          margin-top: 10px;
+          color: #1d4d8f;
+          text-decoration: none;
+        }
+
+        .event-box .event-link:hover {
+            text-decoration: underline;
+            color: #1a3d7f;
+        }
+        .create-button {
             padding: 10px 20px;
             background-color: blue;
             color: white;
@@ -143,19 +206,17 @@
 
 <html>
 <head>
- 
 <title>Drop-down Menu design - </title>
 <link rel="stylesheet" href="C:\Users\Asus\Desktop\VS CODE\Event_tracker\style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
 
 <body>
   <div class="menu-bar">
-    <div class="title">Eventify</div>
     <div class="search-container">
-        
-        <input type="text" placeholder="Search..">
+      <form action="/search" method="POST">
+        <input type="text" name="query" placeholder="Search..." required>
         <button type="submit">Go</button>
-        <a href="#">
+    </form>
             <i class="fa-solid fa-magnifying-glass"></i>
            
 
@@ -165,29 +226,49 @@
 
 
 <ul> 
-<li class="active"><a href="#">Home</a></li>
-<li><a href="#">About Us</a></li>
-<li><a href="#">Category</a>
+<li class="active"><a href="/user_dashboard">Home</a></li>
+<li><a href="/about">About Us</a></li>
+<li><a href="/user_dashboard">Category</a>
     <div class="sub-menu-1">
         <ul>
-            <li><a href="#"> Seminar</a></li>
-            <li><a href="#"> Fest</a></li>
-            <li><a href="#"> Competition</a></li>
+            <li><a href="/sem"> Seminar</a></li>
+            <li><a href="/fest"> Fest</a></li>
+            <li><a href="/comp"> Competition</a></li>
         </ul>
     </div>
 
 
 
 </li>
-<li><a href="/admin_ticket">Tickets</a></li>
+<li><a href="/ticket">Tickets</a></li>
 <li><a href="#">Highlights</a></li>
-<li><a href="#">FAQ</a></li> 
+<li><a href="/faq">FAQ</a></li> 
+
+<a href="/logout" class="logout-button">Logout</a>
 
 </ul>
         </div>
-    <h1>Welcome, {{ username }}</h1>
-    <h2>Club: {{ club_name }}</h2>
-    <a href="/event_post" class="create-button">create event</a>
-    <a href="/logout" class="logout-button">Logout</a>
+        <h1>Welcome, {{ username }}</h1>
+        <h2>Club: {{ club_name }}</h2>
+        <a href="/event_post" class="create-button">create event</a>
+
+ 
+    
+  
+</div><div class="event-container">
+  {% for post in posts %}
+  <div class="event-box">
+      <div class="event-title">{{ post['Event_name'] }}</div>
+      <strong>Details:</strong> {{ post['details'] }}<br>
+      <strong>Date:</strong> {{ post['Event_date'] }}<br>
+      <strong>Link:</strong>
+      <a href="{{ post['Event_link'] or '#' }}" class="event-link" target="_blank">
+          {{ post['Event_link'] or 'N/A' }}
+      </a>
+  </div>
+  {% endfor %}
+</div>
+
+  
 </body>
 </html>
