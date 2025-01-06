@@ -42,33 +42,40 @@
   background: #2e60b1;
   border-radius: 3px;
 }
-.box
-{
-height:30px;
-display:flex;
-cursor:pointer;
-padding:10px 20px;
-background: #fff;
-border-radius:30px;
-align-items:center;
-box-shadow:0 10px 25px rgba(0,0,0,0.3);   
-}
-.box:hover input {
-  width:400px;
-}
+.search-container {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px 20px;
+        }
 
-.box input{
-  width:0;
-  outline:none;
-  border:none;
-  font-weight:500;
-  transition:0.8;
-  background:transition;
-}
-.box a .fas{
-  color:aquamarine;
-  font-size:18px;
-}
+        .search-container .box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+
 
 .sub-menu-1
 {
@@ -103,7 +110,7 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
 }
 .menu-bar ul li:hover .sub-menu-1 ul li a:hover
 {
-  color: #2e60b1;
+  color: black;
 
 
 }
@@ -185,6 +192,7 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
             margin-top: 20px;
             display: inline-block;
         }
+        .but{color: white;}
     </style>
 </head>
 
@@ -196,11 +204,11 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
 
 <body>
   <div class="menu-bar">
-    <div class="box">
-        
-        <input type="text" placeholder="Search..">
+    <div class="search-container">
+      <form action="/search" method="POST">
+        <input type="text" name="query" placeholder="Search..." required>
         <button type="submit">Go</button>
-        <a href="#">
+    </form>
             <i class="fa-solid fa-magnifying-glass"></i>
            
 
@@ -210,14 +218,14 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
 
 
 <ul> 
-<li class="active"><a href="#">Home</a></li>
-<li><a href="#">About Us</a></li>
-<li><a href="#">Category</a>
+<li class="active"><a href="/user_dashboard">Home</a></li>
+<li><a href="/about">About Us</a></li>
+<li><a href="/user_dashboard">Category</a>
     <div class="sub-menu-1">
         <ul>
-            <li><a href="#"> Seminar</a></li>
-            <li><a href="#"> Fest</a></li>
-            <li><a href="#"> Competition</a></li>
+            <li><a href="/sem"> Seminar</a></li>
+            <li><a href="/fest"> Fest</a></li>
+            <li><a href="/comp"> Competition</a></li>
         </ul>
     </div>
 
@@ -226,9 +234,9 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
 </li>
 <li><a href="/ticket">Tickets</a></li>
 <li><a href="#">Highlights</a></li>
-<li><a href="#">FAQ</a></li> 
+<li><a href="/faq">FAQ</a></li> 
 
-
+<a href="/logout" class="logout-button">Logout</a>
 
 </ul>
         </div>
@@ -237,46 +245,15 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
 
   <!--ADRITA-->
   <div class="filter-buttons">
-    <button onclick="fetchEvents('all')">All</button>
-    <button onclick="fetchEvents('today')">Today</button>
-    <button onclick="fetchEvents('this_week')">This Week</button>
-    <button onclick="fetchEvents('this_month')">This Month</button>
-  </div>
+    <button><a href="/user_dasboard" class="but" style="text-decoration: none;">All</a></button>
+    <button>Today</button>
+    <button>This Week</button>
+    <button>This Month</button>
+</div>
+
   <ul id="event-list"></ul>
 
     
-    <script>
-      function fetchEvents(filter) {
-    fetch(`/filtered_events?filter=${filter}`)
-        .then(response => response.json())
-        .then(data => {
-            const eventList = document.getElementById('event-list');
-            eventList.innerHTML = ''; // Clear the previous events
-
-            data.events.forEach(event => {
-                const eventBox = document.createElement('div');
-                eventBox.className = 'event-box';
-
-                eventBox.innerHTML = `
-                    <div class="event-title">${event.Event_name}</div>
-                    <strong>Details:</strong> ${event.details}<br>
-                    <strong>Date:</strong> ${event.Event_date}<br>
-                    <strong>Time:</strong> ${event.Event_time || 'N/A'}<br>
-                    <strong>Location:</strong> ${event.Event_location || 'N/A'}<br>
-                    <strong>Link:</strong> 
-                    <a href="${event.Event_link || '#'}" class="event-link" target="_blank">
-                        ${event.Event_link || 'N/A'}
-                    </a>
-                `;
-
-                eventList.appendChild(eventBox);
-            });
-        })
-        .catch(error => console.error('Error fetching events:', error));
-}
-
-      fetchEvents('all');
-  </script>
   
 </div><div class="event-container">
   {% for post in posts %}
@@ -284,8 +261,6 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
       <div class="event-title">{{ post['Event_name'] }}</div>
       <strong>Details:</strong> {{ post['details'] }}<br>
       <strong>Date:</strong> {{ post['Event_date'] }}<br>
-      <strong>Time:</strong> {{ post['Event_time'] or 'N/A' }}<br>
-      <strong>Location:</strong> {{ post['Event_location'] or 'N/A' }}<br>
       <strong>Link:</strong>
       <a href="{{ post['Event_link'] or '#' }}" class="event-link" target="_blank">
           {{ post['Event_link'] or 'N/A' }}
@@ -294,6 +269,6 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
   {% endfor %}
 </div>
 
-  <a href="/logout" class="logout-button">Logout</a>
+  
 </body>
 </html>
