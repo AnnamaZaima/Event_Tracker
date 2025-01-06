@@ -5,17 +5,17 @@ import re
 
 
 app = Flask(__name__)
-app.secret_key = "shafin"  # Change this to a strong secret key
+app.secret_key = "shafin" 
 
 # Database Configuration
 db_config = {
     'host': 'localhost',
     'user': 'root',
     'password': '',
-    'database': 'eventify'
+    'database': 'eventifyy'
 }
 
-# Route for home page
+# Route for 1st page
 @app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
 def user_login():
@@ -124,7 +124,7 @@ def club_login():
             return redirect('/club_login')
     return render_template('club_login.html')
 
-# Route for dashboard (protected page)
+# Route for dashboard 
 @app.route('/dashboard')
 def dashboard():
     if 'username' in session:
@@ -134,12 +134,14 @@ def dashboard():
             cursor = conn.cursor(dictionary=True)
             cursor.execute("SELECT club_name FROM club WHERE username = %s", (username,))
             club = cursor.fetchone()
+            cursor.execute("SELECT * FROM event")
+            posts = cursor.fetchall()
             cursor.close()
             conn.close()
 
             if club:
                 club_name = club['club_name']
-                return render_template('dashboard.html', username=username, club_name=club_name)
+                return render_template('dashboard.html', username=username, club_name=club_name,posts=posts)
             else:
                 flash('User not found.', 'danger')
                 return redirect('/login')
@@ -478,6 +480,52 @@ def search():
             return redirect('/user_dashboard')
     return redirect('/user_dashboard')
 
+
+
+@app.route('/sem')
+def sem():
+            try:
+                connection = mysql.connector.connect(**db_config)
+                cursor = connection.cursor(dictionary=True)
+                # Search query for event name and details
+                cursor.execute("""
+                SELECT * FROM seminar 
+                """)
+                results = cursor.fetchall()
+                return render_template('sem.html', results=results)
+            except mysql.connector.Error as err:
+                flash(f"Database error: {err}", "danger")
+                return redirect('/user_dashboard')
+
+@app.route('/comp')
+def comp():
+            try:
+                connection = mysql.connector.connect(**db_config)
+                cursor = connection.cursor(dictionary=True)
+                # Search query for event name and details
+                cursor.execute("""
+                SELECT * FROM competition
+                """)
+                results = cursor.fetchall()
+                return render_template('comp.html', results=results)
+            except mysql.connector.Error as err:
+                flash(f"Database error: {err}", "danger")
+                return redirect('/user_dashboard')
+            
+@app.route('/fest')
+def fest():
+            try:
+                connection = mysql.connector.connect(**db_config)
+                cursor = connection.cursor(dictionary=True)
+                # Search query for event name and details
+                cursor.execute("""
+                SELECT * FROM competition
+                """)
+                results = cursor.fetchall()
+                return render_template('fest.html', results=results)
+            except mysql.connector.Error as err:
+                flash(f"Database error: {err}", "danger")
+                return redirect('/user_dashboard')
 
 
 
